@@ -61,4 +61,4 @@ Deliverables
 - A threat model and clearly stated limitations.
 - A final summary of completed features, remaining gaps, and exact startup instructions.
 
-Begin implementation now. Do not stop after proposing a plan, and do not optimize for token consumption; optimize for a useful, verified application.
+Begin implementation now.  optimize for a useful, verified application.

@@ -1,64 +1,25 @@
-Build a self-hosted Email Security & DLP Policy Testing Lab for cybersecurity analysts. Deliver a working application, not just a plan or mockup.
+Take the existing Email Security & DLP Policy Testing Lab from prototype to a thoroughly validated internal pilot.
 
-Purpose
-Help security teams test illustrative policies, identify detection gaps and false positives, compare policy versions, and train analysts using entirely synthetic emails and documents.
+Use only synthetic data. Preserve local processing, no telemetry, no external AI calls, and no connections to company systems.
 
-Privacy and boundaries
-- Use only fictional organizations, users, policies, and synthetic records. Use reserved example domains.
-- Do not request company data, credentials, production logs, or access to live security systems.
-- The finished application must run locally without external AI services, telemetry, analytics, CDNs, or runtime internet access.
-- Keep all application data and processing local. Document any internet access needed to install dependencies.
-- Never send test emails, visit embedded URLs, execute attachments, or modify live security controls.
-- Label generated artifacts as synthetic. Where a label would affect a detection test, put it in the accompanying manifest.
-- Clearly distinguish simulated policy results from observed results imported from a vendor test environment. Never imply this lab reproduces a commercial product’s behavior.
+First inspect the implementation. Map every original requirement to working code and evidence. Identify missing functionality, placeholders, incorrect behavior, and unsupported claims. Then implement and verify the gaps.
 
-Implementation
-Use Python for the backend and policy-testing engine, SQLite for local storage, and a browser-based interface. Choose sensible, maintainable frontend tools. Bind to localhost by default. Provide a containerized deployment option and reproducible setup instructions.
+Use independent subagents for bounded reviews of the policy engine, application security, scenario quality, and user workflows. Have reviewers challenge the implementation with concrete failing examples. Fix confirmed findings.
 
-First milestone: complete a working vertical slice
-1. Generate synthetic emails with sender, recipients, subject, body, authentication metadata, and attachments.
-2. Support plain-text and CSV attachments initially.
-3. Implement three scenarios:
-   - Sensitive test records in an email body sent externally.
-   - Sensitive test records in an attachment sent externally.
-   - Legitimate internal sharing that should not trigger the sample external-sharing policy.
-4. Create a sample policy: flag synthetic customer records sent to an external recipient.
-5. Run the policy against the scenarios.
-6. Show expected versus actual results, matched evidence, and an explanation.
-7. Save test runs and let users inspect them through the interface.
+Expand validation with:
+- Synthetic MIME emails containing multipart bodies, Unicode, encoded headers, multiple recipients, and attachments.
+- Explicit treatment of malformed, unsupported, encrypted, and partially parsed content as unevaluated.
+- Boundary tests for thresholds, recipient-domain matching, exceptions, duplicate records, and policy precedence.
+- A separate expected-results oracle so tests do not merely repeat the implementation.
+- Mutation testing: deliberately alter important policy logic and verify that the test suite detects the mistakes.
+- Reproducible performance benchmarks at increasing dataset sizes, with measured bottlenecks and verified improvements.
+- End-to-end browser tests covering generation, policy editing, execution, comparison, training, and report export.
+- Security tests for uploads, rendered content, authentication, authorization, sessions, and CSV formula injection.
+- Backup-and-restore verification and tests of retention behavior.
+- Verification that core workflows function with outbound internet access blocked.
 
-Then extend the working application
-- Synthetic-data generator with reproducible random seeds and configurable dataset sizes.
-- Scenario library covering accidental disclosure, personal-email destinations, external forwarding, attachment disclosures, and benign business messages.
-- Inert phishing-training examples with no live malicious URLs or executable payloads.
-- Versioned policies supporting internal/external destinations, data categories, thresholds, exceptions, and illustrative allow, warn, or block decisions.
-- Policy comparisons showing newly caught cases, missed cases, and changed false positives.
-- Confusion matrices and precision/recall metrics calculated from documented expected outcomes. Handle undefined metrics explicitly.
-- Coverage reports that explain that synthetic results do not establish real-world detection effectiveness.
-- Analyst training mode with case notes, decisions, and answer explanations hidden until submission.
-- Exportable synthetic test packages with manifests and expected outcomes for manual use in an approved internal test environment.
-- Local import of a documented results format, with sample synthetic imports.
-- CSV and printable HTML reports.
-- Local audit history and configurable retention.
-- Authentication and analyst/admin roles for shared deployment. Document audit-log limitations and deployment requirements.
+Build a substantial, varied scenario corpus. Prefer meaningful coverage over thousands of near-identical examples. Include clear expected outcomes and explanations.
 
-Security and correctness
-Treat all imported content as untrusted. Escape displayed content, limit upload sizes, validate file types, prevent path traversal, and avoid logging sensitive payloads. Do not execute imported content. Flag unsupported or unparsed attachments as unevaluated rather than clean. Do not invent cryptographic authentication checks: supplied SPF/DKIM/DMARC values are scenario metadata unless an actual verifier is implemented.
+Keep the application runnable throughout. Complete implementation, testing, fixes, and a final independent review. Deliver a concise evidence report explaining what passed, what failed, and what remains unsuitable for production. Do not claim production readiness without evidence.
 
-Workflow
-Inspect the project folder and applicable instructions first. Make reasonable decisions and proceed without repeatedly asking for approval on routine, reversible implementation choices. Use subagents for bounded, independent tasks such as scenario design, implementation, and security review, with clear ownership.
-
-Build in runnable milestones, beginning with the vertical slice. Keep a short progress checklist and verify each milestone before expanding it. If a feature cannot be completed, report it explicitly; do not substitute decorative controls or pretend functionality.
-
-Validation
-Test meaningful behavior: policy matches and exceptions, attachment parsing, deterministic generation, expected-result scoring, policy comparisons, malformed imports, unsafe rendered content, and access controls. Run an end-to-end workflow from generation through report export. Check the interface in a browser if browser tools are available.
-
-Deliverables
-- Working source code and local application.
-- Synthetic fixtures and documented scenario expectations.
-- Passing automated tests and a concise validation report.
-- Setup, usage, architecture, and internal deployment documentation.
-- A threat model and clearly stated limitations.
-- A final summary of completed features, remaining gaps, and exact startup instructions.
-
-Begin implementation now.  optimize for a useful, verified application.
+Start with inspection and proceed through the work. Do not stop at an audit report when you can implement the fixes.
